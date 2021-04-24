@@ -46,7 +46,10 @@ let ProductResolver = class ProductResolver {
         return Product_1.Product.findOne(id);
     }
     products() {
-        return Product_1.Product.find();
+        return __awaiter(this, void 0, void 0, function* () {
+            const products = yield Product_1.Product.find();
+            return products;
+        });
     }
     createProduct(name, price, image) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -4,7 +4,6 @@ import {COOKIE_NAME, __prod__} from "./constants"
 import express from "express"
 import {ApolloServer} from "apollo-server-express"
 import {buildSchema} from "type-graphql"
-import { HelloResolver } from "./resolvers/hello"
 import { PostResolver } from "./resolvers/post"
 import { UserResolver } from "./resolvers/user"
 import Redis from "ioredis"
@@ -20,6 +19,9 @@ import { createUserLoader } from "./utils/createUserLoader"
 import { createVoteLoader } from "./utils/createVoteLoader"
 import { Product } from "./entities/Product"
 import { ProductResolver } from "./resolvers/product"
+import { Order } from "./entities/Order"
+import { OrderDetail } from "./entities/OrderDetail"
+import { OrderResolver } from "./resolvers/order"
 
 
 const main = async () => {
@@ -29,7 +31,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations:[path.join(__dirname, "./migrations/*")],
-        entities: [Post, User, Vote, Product]
+        entities: [Post, User, Vote, Product, Order, OrderDetail]
 
     })
     // await conn.runMigrations()
@@ -37,6 +39,9 @@ const main = async () => {
     // await Vote.delete({})
     // await Post.delete({})
     // await User.delete({})
+    // await OrderDetail.delete({})
+    // await Order.delete({})
+
     const app = express()
 
     const RedisStore = connectRedis(session)
@@ -67,7 +72,7 @@ const main = async () => {
     )
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers:[HelloResolver, PostResolver, UserResolver, ProductResolver],
+            resolvers:[PostResolver, UserResolver, ProductResolver, OrderResolver],
             validate: false,
         }), 
         context: ({req, res}) => ({req, res, redis, userLoader: createUserLoader(), voteLoader: createVoteLoader()})

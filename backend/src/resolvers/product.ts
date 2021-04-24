@@ -24,10 +24,11 @@ product(
 }
 
 @Query(() => [Product])
-products(
+async products(
 
 ): Promise<Product[]>{
-    return Product.find()
+    const products = await Product.find()
+    return products
 }
 
 

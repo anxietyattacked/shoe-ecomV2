@@ -18,7 +18,6 @@ const constants_1 = require("./constants");
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
-const hello_1 = require("./resolvers/hello");
 const post_1 = require("./resolvers/post");
 const user_1 = require("./resolvers/user");
 const ioredis_1 = __importDefault(require("ioredis"));
@@ -34,6 +33,9 @@ const createUserLoader_1 = require("./utils/createUserLoader");
 const createVoteLoader_1 = require("./utils/createVoteLoader");
 const Product_1 = require("./entities/Product");
 const product_1 = require("./resolvers/product");
+const Order_1 = require("./entities/Order");
+const OrderDetail_1 = require("./entities/OrderDetail");
+const order_1 = require("./resolvers/order");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const conn = yield typeorm_1.createConnection({
         type: "postgres",
@@ -41,7 +43,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         logging: true,
         synchronize: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
-        entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product]
+        entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product, Order_1.Order, OrderDetail_1.OrderDetail]
     });
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);
@@ -68,7 +70,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
-            resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver, product_1.ProductResolver],
+            resolvers: [post_1.PostResolver, user_1.UserResolver, product_1.ProductResolver, order_1.OrderResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() })

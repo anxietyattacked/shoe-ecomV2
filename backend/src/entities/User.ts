@@ -3,6 +3,7 @@ import { Field, ObjectType } from "type-graphql";
 import { Column, PrimaryGeneratedColumn, Entity, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from "typeorm";
 import { Post } from "./Post";
 import { Vote } from "./Vote";
+import { Order } from "./Order";
 
 
 @ObjectType()
@@ -31,6 +32,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, post => post.creator)
   posts: Post[]
+
+  @OneToMany(() => Order, order => order.user)
+  orders: Order[]
 
   @OneToMany(() => Vote, vote => vote.user)
   votes: Vote[]

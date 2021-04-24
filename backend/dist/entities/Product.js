@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Product = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const OrderDetail_1 = require("./OrderDetail");
 let Product = class Product extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -34,6 +35,10 @@ __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], Product.prototype, "image", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => OrderDetail_1.OrderDetail, orderDetail => orderDetail.product),
+    __metadata("design:type", Array)
+], Product.prototype, "orderDetails", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
