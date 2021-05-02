@@ -22,6 +22,14 @@ export class Product extends BaseEntity {
   @Column()
   image!: string
 
+  @Field()
+  @Column()
+  imageHeight!: number
+
+  @Field()
+  @Column()
+  imageWidth!: number
+
   @OneToMany(() => OrderDetail, orderDetail => orderDetail.product) 
   orderDetails: OrderDetail[]; 
 

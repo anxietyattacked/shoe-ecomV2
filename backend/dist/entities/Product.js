@@ -36,6 +36,16 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "image", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Product.prototype, "imageHeight", void 0);
+__decorate([
+    type_graphql_1.Field(),
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Product.prototype, "imageWidth", void 0);
+__decorate([
     typeorm_1.OneToMany(() => OrderDetail_1.OrderDetail, orderDetail => orderDetail.product),
     __metadata("design:type", Array)
 ], Product.prototype, "orderDetails", void 0);

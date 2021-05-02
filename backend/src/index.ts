@@ -22,6 +22,7 @@ import { ProductResolver } from "./resolvers/product"
 import { Order } from "./entities/Order"
 import { OrderDetail } from "./entities/OrderDetail"
 import { OrderResolver } from "./resolvers/order"
+import Stripe from "stripe"
 
 
 const main = async () => {
@@ -35,12 +36,13 @@ const main = async () => {
 
     })
     // await conn.runMigrations()
-   
+    // await OrderDetail.delete({})
+    // await Order.delete({})
+
+    // await Product.delete({})
     // await Vote.delete({})
     // await Post.delete({})
     // await User.delete({})
-    // await OrderDetail.delete({})
-    // await Order.delete({})
 
     const app = express()
 
@@ -50,6 +52,10 @@ const main = async () => {
         origin: process.env.CORS_ORIGIN,
         credentials: true,
     }))
+    const stripe = new Stripe(process.env.STRIPE_SECRET
+    , {
+        apiVersion: '2020-08-27',
+      })
     
     app.use(
       session({
@@ -80,6 +86,32 @@ const main = async () => {
 
 
     apolloServer.applyMiddleware({ app, cors: false})
+    app.use(express.json());
+    app.post("/stripe/charge", async (req, res) => {
+        console.log("stripe-routes.js 9 | route reached", req.body);
+        let { amount, id } = req.body;
+        console.log("stripe-routes.js 10 | amount and id", amount, id);
+        try {
+          const payment = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: "USD",
+            description: "Your Company Description",
+            payment_method: id,
+            confirm: true,
+          });
+          console.log("stripe-routes.js 19 | payment", payment);
+          res.json({
+            message: "Payment Successful",
+            success: true,
+          });
+        } catch (error) {
+          console.log("stripe-routes.js 17 | error", error);
+          res.json({
+            message: "Payment Failed",
+            success: false,
+          });
+        }
+      });
 
     app.listen(parseInt(process.env.PORT), () => {
         console.log("server started on localhost: 4000")

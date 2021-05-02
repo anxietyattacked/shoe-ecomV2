@@ -1,4 +1,4 @@
-import { Arg, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Field, InputType, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import { Product } from "../entities/Product";
 
 @InputType()
@@ -13,6 +13,13 @@ class ProductInput {
     image: string
 }
 
+@ObjectType()
+class ProductPages {
+    @Field(() => [Product])
+    products: Product[]
+    @Field(() => Int)
+    pages: number
+}
 
 @Resolver(Product)
 export class ProductResolver {
@@ -23,12 +30,18 @@ product(
     return Product.findOne(id)
 }
 
-@Query(() => [Product])
+@Query(() => ProductPages)
 async products(
+@Arg("limit", () => Int) limit : number,
+@Arg("offset", () => Int) offset : number
+): Promise<ProductPages>{
+    const [products, totalCount] = await Product.findAndCount({
+        take: limit,
+        skip: offset
+    })
+    const pages = Math.ceil(totalCount / limit)
 
-): Promise<Product[]>{
-    const products = await Product.find()
-    return products
+    return {products: products, pages: pages }
 }
 
 
@@ -36,9 +49,11 @@ async products(
 async createProduct(
     @Arg("name") name: string,
     @Arg("price", () => Int) price: number,
-    @Arg("image") image: string
+    @Arg("image") image: string,
+    @Arg("imageHeight", () => Int) imageHeight: number,
+    @Arg("imageWidth", () => Int) imageWidth: number
 ): Promise<Product>{
-    return await Product.create({name, image, price}).save()
+    return await Product.create({name, image, price, imageHeight, imageWidth}).save()
 }
 @Mutation(() => Boolean)
 async deleteProduct(

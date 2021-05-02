@@ -41,19 +41,36 @@ __decorate([
 ProductInput = __decorate([
     type_graphql_1.InputType()
 ], ProductInput);
+let ProductPages = class ProductPages {
+};
+__decorate([
+    type_graphql_1.Field(() => [Product_1.Product]),
+    __metadata("design:type", Array)
+], ProductPages.prototype, "products", void 0);
+__decorate([
+    type_graphql_1.Field(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], ProductPages.prototype, "pages", void 0);
+ProductPages = __decorate([
+    type_graphql_1.ObjectType()
+], ProductPages);
 let ProductResolver = class ProductResolver {
     product(id) {
         return Product_1.Product.findOne(id);
     }
-    products() {
+    products(limit, offset) {
         return __awaiter(this, void 0, void 0, function* () {
-            const products = yield Product_1.Product.find();
-            return products;
+            const [products, totalCount] = yield Product_1.Product.findAndCount({
+                take: limit,
+                skip: offset
+            });
+            const pages = Math.ceil(totalCount / limit);
+            return { products: products, pages: pages };
         });
     }
-    createProduct(name, price, image) {
+    createProduct(name, price, image, imageHeight, imageWidth) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield Product_1.Product.create({ name, image, price }).save();
+            return yield Product_1.Product.create({ name, image, price, imageHeight, imageWidth }).save();
         });
     }
     deleteProduct(id) {
@@ -75,9 +92,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProductResolver.prototype, "product", null);
 __decorate([
-    type_graphql_1.Query(() => [Product_1.Product]),
+    type_graphql_1.Query(() => ProductPages),
+    __param(0, type_graphql_1.Arg("limit", () => type_graphql_1.Int)),
+    __param(1, type_graphql_1.Arg("offset", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], ProductResolver.prototype, "products", null);
 __decorate([
@@ -85,8 +104,10 @@ __decorate([
     __param(0, type_graphql_1.Arg("name")),
     __param(1, type_graphql_1.Arg("price", () => type_graphql_1.Int)),
     __param(2, type_graphql_1.Arg("image")),
+    __param(3, type_graphql_1.Arg("imageHeight", () => type_graphql_1.Int)),
+    __param(4, type_graphql_1.Arg("imageWidth", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, String]),
+    __metadata("design:paramtypes", [String, Number, String, Number, Number]),
     __metadata("design:returntype", Promise)
 ], ProductResolver.prototype, "createProduct", null);
 __decorate([

@@ -36,6 +36,7 @@ const product_1 = require("./resolvers/product");
 const Order_1 = require("./entities/Order");
 const OrderDetail_1 = require("./entities/OrderDetail");
 const order_1 = require("./resolvers/order");
+const stripe_1 = __importDefault(require("stripe"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const conn = yield typeorm_1.createConnection({
         type: "postgres",
@@ -52,6 +53,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         origin: process.env.CORS_ORIGIN,
         credentials: true,
     }));
+    const stripe = new stripe_1.default(process.env.STRIPE_SECRET, {
+        apiVersion: '2020-08-27',
+    });
     app.use(express_session_1.default({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({
@@ -76,6 +80,33 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() })
     });
     apolloServer.applyMiddleware({ app, cors: false });
+    app.use(express_1.default.json());
+    app.post("/stripe/charge", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("stripe-routes.js 9 | route reached", req.body);
+        let { amount, id } = req.body;
+        console.log("stripe-routes.js 10 | amount and id", amount, id);
+        try {
+            const payment = yield stripe.paymentIntents.create({
+                amount: amount,
+                currency: "USD",
+                description: "Your Company Description",
+                payment_method: id,
+                confirm: true,
+            });
+            console.log("stripe-routes.js 19 | payment", payment);
+            res.json({
+                message: "Payment Successful",
+                success: true,
+            });
+        }
+        catch (error) {
+            console.log("stripe-routes.js 17 | error", error);
+            res.json({
+                message: "Payment Failed",
+                success: false,
+            });
+        }
+    }));
     app.listen(parseInt(process.env.PORT), () => {
         console.log("server started on localhost: 4000");
     });
