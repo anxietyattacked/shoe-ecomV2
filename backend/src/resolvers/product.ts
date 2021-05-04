@@ -1,4 +1,5 @@
 import { Arg, Field, InputType, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { getConnection, getRepository } from "typeorm";
 import { Product } from "../entities/Product";
 
 @InputType()
@@ -44,6 +45,31 @@ async products(
     return {products: products, pages: pages }
 }
 
+@Query(() => ProductPages)
+async searchProducts(
+@Arg("search") search : string,
+@Arg("limit", () => Int) limit : number,
+@Arg("offset", () => Int) offset : number
+): Promise<ProductPages>{
+    // const [products, totalCount] = await Product.findAndCount({
+    //     where:  `"name" ILIKE '${search}'`, 
+    //     take: limit,
+    //     skip: offset
+    // })
+
+
+    const [products, totalCount] = await getConnection()
+    .createQueryBuilder()
+    .select("product")
+    .from(Product, "product")
+    .where('name ILIKE :searchTerm', {searchTerm: `%${search}%`})
+    .take(limit)
+    .skip(offset)
+    .getManyAndCount();
+    const pages = Math.ceil(totalCount / limit)
+
+    return {products: products, pages: pages }
+}
 
 @Mutation(() => Product)
 async createProduct(

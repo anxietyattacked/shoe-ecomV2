@@ -23,6 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const Product_1 = require("../entities/Product");
 let ProductInput = class ProductInput {
 };
@@ -68,6 +69,20 @@ let ProductResolver = class ProductResolver {
             return { products: products, pages: pages };
         });
     }
+    searchProducts(search, limit, offset) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [products, totalCount] = yield typeorm_1.getConnection()
+                .createQueryBuilder()
+                .select("product")
+                .from(Product_1.Product, "product")
+                .where('name ILIKE :searchTerm', { searchTerm: `%${search}%` })
+                .take(limit)
+                .skip(offset)
+                .getManyAndCount();
+            const pages = Math.ceil(totalCount / limit);
+            return { products: products, pages: pages };
+        });
+    }
     createProduct(name, price, image, imageHeight, imageWidth) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield Product_1.Product.create({ name, image, price, imageHeight, imageWidth }).save();
@@ -99,6 +114,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], ProductResolver.prototype, "products", null);
+__decorate([
+    type_graphql_1.Query(() => ProductPages),
+    __param(0, type_graphql_1.Arg("search")),
+    __param(1, type_graphql_1.Arg("limit", () => type_graphql_1.Int)),
+    __param(2, type_graphql_1.Arg("offset", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], ProductResolver.prototype, "searchProducts", null);
 __decorate([
     type_graphql_1.Mutation(() => Product_1.Product),
     __param(0, type_graphql_1.Arg("name")),
