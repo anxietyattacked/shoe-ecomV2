@@ -23,6 +23,8 @@ import { Order } from "./entities/Order"
 import { OrderDetail } from "./entities/OrderDetail"
 import { OrderResolver } from "./resolvers/order"
 import Stripe from "stripe"
+import { CommentResolver } from "./resolvers/comment"
+import {Comment} from "./entities/Comment"
 
 
 const main = async () => {
@@ -32,7 +34,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations:[path.join(__dirname, "./migrations/*")],
-        entities: [Post, User, Vote, Product, Order, OrderDetail]
+        entities: [Post, User, Vote, Product, Order, OrderDetail, Comment]
 
     })
     // await conn.runMigrations()
@@ -78,7 +80,7 @@ const main = async () => {
     )
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers:[PostResolver, UserResolver, ProductResolver, OrderResolver],
+            resolvers:[PostResolver, UserResolver, ProductResolver, OrderResolver, CommentResolver],
             validate: false,
         }), 
         context: ({req, res}) => ({req, res, redis, userLoader: createUserLoader(), voteLoader: createVoteLoader()})

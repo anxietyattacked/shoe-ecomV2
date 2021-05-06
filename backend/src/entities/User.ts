@@ -4,7 +4,8 @@ import { Column, PrimaryGeneratedColumn, Entity, CreateDateColumn, UpdateDateCol
 import { Post } from "./Post";
 import { Vote } from "./Vote";
 import { Order } from "./Order";
-
+import {Comment} from "./Comment"
+ 
 
 @ObjectType()
 @Entity()
@@ -32,6 +33,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, post => post.creator)
   posts: Post[]
+
+  @OneToMany(() =>  Comment, comment => comment.creator)
+  comments: Comment[]
 
   @OneToMany(() => Order, order => order.user)
   orders: Order[]

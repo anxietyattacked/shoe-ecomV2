@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { OrderDetail } from "./OrderDetail";
+import {Comment} from "./Comment"
 
 @ObjectType()
 @Entity()
@@ -32,6 +33,9 @@ export class Product extends BaseEntity {
 
   @OneToMany(() => OrderDetail, orderDetail => orderDetail.product) 
   orderDetails: OrderDetail[]; 
+
+  @OneToMany(() => Comment, comment => comment.product) 
+  comments: Comment[]; 
 
   @Field(() => String)
   @CreateDateColumn()

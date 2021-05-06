@@ -1,13 +1,14 @@
 
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Product } from "./Product";
 import { User } from "./User";
 import { Vote } from "./Vote";
 
 
 @ObjectType()
 @Entity()
-export class Post extends BaseEntity {
+export class Comment extends BaseEntity {
 
   @Field()
   @PrimaryGeneratedColumn()
@@ -16,31 +17,23 @@ export class Post extends BaseEntity {
 
   @Field()
   @Column()
-  title!: string
-
-  @Field()
-  @Column()
   text!: string
-
-
-  @Field()
-  @Column({type: "int", default: 0})
-  points!: number
-
-  @Field(() => Int, {nullable: true})
-  voteStatus: number | null
 
   @Field()
   @Column()
   creatorId: number
 
-  @Field(() => User)
-  @ManyToOne(() => User, user => user.posts)
-  creator: User
+  @Field()
+  @Column()
+  productId: number
 
-  @Field(() => Vote)
-  @OneToMany(() => Vote, vote => vote.post)
-  votes: Vote[]
+  @Field(() => Product)
+  @ManyToOne(() => Product, product => product.comments)
+  product: Product
+
+  @Field(() => User)
+  @ManyToOne(() => User, user => user.comments)
+  creator: User
 
   @Field(() => String)
   @CreateDateColumn()

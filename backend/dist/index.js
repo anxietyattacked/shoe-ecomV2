@@ -37,6 +37,8 @@ const Order_1 = require("./entities/Order");
 const OrderDetail_1 = require("./entities/OrderDetail");
 const order_1 = require("./resolvers/order");
 const stripe_1 = __importDefault(require("stripe"));
+const comment_1 = require("./resolvers/comment");
+const Comment_1 = require("./entities/Comment");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const conn = yield typeorm_1.createConnection({
         type: "postgres",
@@ -44,7 +46,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         logging: true,
         synchronize: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
-        entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product, Order_1.Order, OrderDetail_1.OrderDetail]
+        entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product, Order_1.Order, OrderDetail_1.OrderDetail, Comment_1.Comment]
     });
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);
@@ -74,7 +76,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
-            resolvers: [post_1.PostResolver, user_1.UserResolver, product_1.ProductResolver, order_1.OrderResolver],
+            resolvers: [post_1.PostResolver, user_1.UserResolver, product_1.ProductResolver, order_1.OrderResolver, comment_1.CommentResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() })
