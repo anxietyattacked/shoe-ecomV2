@@ -33,10 +33,10 @@ async productComments(
 
 ):Promise<any>{
     const [comms, totalCount] = await Comment.findAndCount({where:{productId}, take: limit, skip: offset, order:{createdAt: "ASC"}, relations:["creator"]})
-    // const test  = await Comment.find({where:{productId}, relations:["creator"]})
+    const pages = Math.ceil(totalCount / limit)
 
     
-    return {comments: comms, page: totalCount}
+    return {comments: comms, pages: pages}
 }
 
 @Mutation(() => Comment)
