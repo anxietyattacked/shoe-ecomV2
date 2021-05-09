@@ -1,0 +1,14 @@
+mutation CreateOrder($orderInput: OrderInput!, $cart: [OrderDetailInput!]!){
+    createOrder(orderInput: $orderInput, cart: $cart){
+    order{
+    id
+    total
+    shipName
+    shipAddress
+    city
+    state
+    zipcode
+    country
+  }
+    }
+}

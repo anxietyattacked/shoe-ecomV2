@@ -1,0 +1,8 @@
+mutation CreateComment($text: String!, $productId: Int!){
+    createComment(text:$text, productId:$productId){
+        creatorId
+        productId
+        text
+        createdAt
+    }
+}

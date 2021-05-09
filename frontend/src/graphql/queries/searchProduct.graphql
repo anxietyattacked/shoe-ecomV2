@@ -1,0 +1,13 @@
+query SearchProducts($search: String!, $limit: Int!, $offset: Int!){
+    searchProducts(search:$search, limit:$limit, offset:$offset){
+     products{
+  id
+  name
+  price
+  image
+  imageHeight
+  imageWidth
+}
+  pages
+  }
+}

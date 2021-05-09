@@ -1,0 +1,12 @@
+mutation CreateProduct($name: String!, $price: Int!, $image: String!, $imageWidth: Int!, $imageHeight: Int!){
+    createProduct(name:$name, price: $price, image: $image, imageWidth: $imageWidth, imageHeight: $imageHeight){
+        id
+        name
+        price
+        image
+        imageWidth
+        imageHeight
+        createdAt
+        updatedAt
+    }
+}

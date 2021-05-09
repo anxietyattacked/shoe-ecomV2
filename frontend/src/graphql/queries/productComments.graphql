@@ -1,0 +1,16 @@
+query ProductComments($productId: Int!, $limit: Int!, $offset: Int!){
+productComments(productId: $productId, limit: $limit, offset: $offset){
+comments{
+  id
+  text
+  createdAt
+  updatedAt
+  creator{
+    username
+    id
+  }
+}
+    pages
+  }
+}
+

@@ -1,0 +1,19 @@
+query Orders{
+    orders{
+    id
+    shipName
+    shipAddress
+    city
+    state
+    zipcode
+    country
+    orderDetails{
+      productId
+			orderId
+      id
+      name
+      price
+      qty
+    }
+  }
+}

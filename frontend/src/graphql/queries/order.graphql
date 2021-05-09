@@ -1,0 +1,19 @@
+query Order($id: Int!){
+    order(id: $id){
+       id
+    shipName
+    shipAddress
+    city
+    state
+    zipcode
+    country
+	orderDetails{
+      id
+      productId
+      orderId
+      name
+      price
+      qty
+    }
+    }
+}
