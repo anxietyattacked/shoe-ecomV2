@@ -109,8 +109,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
     }));
-    app.listen(parseInt(process.env.PORT), () => {
-        console.log("server started on localhost: 4000");
+    app.listen(parseInt(process.env.PORT) || 4000, () => {
+        console.log(`server started on localhost: ${process.env.PORT}`);
     });
 });
 main().catch((err) => {

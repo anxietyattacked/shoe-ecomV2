@@ -32,9 +32,12 @@ const main = async () => {
         type: "postgres",
         url: process.env.DATABASE_URL, 
         logging: true,
-        synchronize: true,
+        synchronize: false,
         migrations:[path.join(__dirname, "./migrations/*")],
-        entities: [Post, User, Vote, Product, Order, OrderDetail, Comment]
+        entities: [Post, User, Vote, Product, Order, OrderDetail, Comment],
+        ssl: {
+          rejectUnauthorized: false
+        }
 
     })
     // await conn.runMigrations()
@@ -45,11 +48,12 @@ const main = async () => {
     // await Vote.delete({})
     // await Post.delete({})
     // await User.delete({})
-
+    conn
     const app = express()
 
     const RedisStore = connectRedis(session)
-    const redis = new Redis()
+    const redis = new Redis(process.env.REDIS_URL)
+    app.set("trust proxy", 1);
     app.use(cors({
         origin: process.env.CORS_ORIGIN,
         credentials: true,
@@ -115,8 +119,8 @@ const main = async () => {
         }
       });
 
-    app.listen(parseInt(process.env.PORT), () => {
-        console.log("server started on localhost: 4000")
+    app.listen(parseInt(process.env.PORT) || 4000, () => {
+        console.log(`server started on localhost: ${process.env.PORT}`)
     })
 
 }

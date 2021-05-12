@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": { "node": "12.19.0" },
   "scripts": {
     "env": "npx gen-env-types .env -o src/env.d.ts -e .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsc -w",
     "dev": "nodemon ./dist/index.js",
     "start": "node ./dist/index.js",
-    "start2": "ts-node ./src/index.ts"
+    "postinstall": "tsc"
+   
   },
   "keywords": [],
   "author": "",

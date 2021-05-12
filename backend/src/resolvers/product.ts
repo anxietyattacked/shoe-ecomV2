@@ -1,18 +1,7 @@
-import { Arg, Field, InputType, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
-import { getConnection, getRepository } from "typeorm";
+import { Arg, Field, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { getConnection} from "typeorm";
 import { Product } from "../entities/Product";
 
-@InputType()
-class ProductInput {
-    @Field()
-    name: string
-
-    @Field()
-    price: number
-
-    @Field()
-    image: string
-}
 
 @ObjectType()
 class ProductPages {
