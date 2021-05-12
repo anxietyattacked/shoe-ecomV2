@@ -43,6 +43,8 @@ const Product : React.FC = () => {
  
     if(error){
         console.log(error.message)
+        console.log(data)
+        console.log(intId)
         return(
             
             <div>{error.message}</div>
