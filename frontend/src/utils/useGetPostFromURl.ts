@@ -1,5 +1,5 @@
-import { useRouter } from "next/router"
-import { usePostQuery, useProductQuery } from "../generated/graphql"
+
+import { useProductQuery } from "../generated/graphql"
 import { useGetIntId } from "./useGetIntId"
 
 export const useGetPostFromUrl = () => {
