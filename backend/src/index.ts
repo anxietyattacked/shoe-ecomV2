@@ -53,7 +53,7 @@ const main = async () => {
     const redis = new Redis()
     app.set("trust proxy", 1);
     app.use(cors({
-        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+        origin: process.env.CORS_ORIGIN,
         credentials: true,
     }))
     const stripe = new Stripe(process.env.STRIPE_SECRET

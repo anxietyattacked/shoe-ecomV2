@@ -55,7 +55,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const redis = new ioredis_1.default();
     app.set("trust proxy", 1);
     app.use(cors_1.default({
-        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+        origin: process.env.CORS_ORIGIN,
         credentials: true,
     }));
     const stripe = new stripe_1.default(process.env.STRIPE_SECRET, {
