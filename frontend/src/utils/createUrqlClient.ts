@@ -81,7 +81,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   }
 
   return {
-    url: process.env.GRAPHQL_URL,
+    url: process.env.GRAPHQL_URL!,
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie
