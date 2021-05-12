@@ -47,17 +47,15 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         synchronize: false,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product, Order_1.Order, OrderDetail_1.OrderDetail, Comment_1.Comment],
-        ssl: {
-            rejectUnauthorized: false
-        }
+        ssl: false
     });
     conn;
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);
-    const redis = new ioredis_1.default(process.env.REDIS_URL);
+    const redis = new ioredis_1.default();
     app.set("trust proxy", 1);
     app.use(cors_1.default({
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
         credentials: true,
     }));
     const stripe = new stripe_1.default(process.env.STRIPE_SECRET, {

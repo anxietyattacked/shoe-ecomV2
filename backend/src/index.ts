@@ -35,9 +35,7 @@ const main = async () => {
         synchronize: false,
         migrations:[path.join(__dirname, "./migrations/*")],
         entities: [Post, User, Vote, Product, Order, OrderDetail, Comment],
-        ssl: {
-          rejectUnauthorized: false
-        }
+        ssl: false
 
     })
     // await conn.runMigrations()
@@ -52,10 +50,10 @@ const main = async () => {
     const app = express()
 
     const RedisStore = connectRedis(session)
-    const redis = new Redis(process.env.REDIS_URL)
+    const redis = new Redis()
     app.set("trust proxy", 1);
     app.use(cors({
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
         credentials: true,
     }))
     const stripe = new Stripe(process.env.STRIPE_SECRET

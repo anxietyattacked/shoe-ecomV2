@@ -40,9 +40,7 @@ const Product : React.FC = () => {
             <div>loading...</div>
         )
     }
-    if(!fetching && !data){
-        return <div>Product not found</div>
-    }
+
     if(error){
         console.log(error.message)
         return(
