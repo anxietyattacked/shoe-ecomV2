@@ -48,7 +48,7 @@ const Product : React.FC = () => {
             <div>{error.message}</div>
         )
     }
-
+    console.log(data?.product)
 
     return (
         <>
