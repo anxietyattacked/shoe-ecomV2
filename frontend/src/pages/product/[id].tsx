@@ -96,4 +96,4 @@ const Product : React.FC = () => {
     )
 }
 
-export default withUrqlClient(createUrqlClient, {ssr: true})(Product)
+export default withUrqlClient(createUrqlClient)(Product)

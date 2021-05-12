@@ -35,8 +35,9 @@ const main = async () => {
         synchronize: false,
         migrations:[path.join(__dirname, "./migrations/*")],
         entities: [Post, User, Vote, Product, Order, OrderDetail, Comment],
-        ssl: false
-
+        ssl: {
+          rejectUnauthorized: false
+        }
     })
     // await conn.runMigrations()
     // await OrderDetail.delete({})
@@ -50,7 +51,7 @@ const main = async () => {
     const app = express()
 
     const RedisStore = connectRedis(session)
-    const redis = new Redis()
+    const redis = new Redis(process.env.REDIS_URL)
     app.set("trust proxy", 1);
     app.use(cors({
         origin: process.env.CORS_ORIGIN,
