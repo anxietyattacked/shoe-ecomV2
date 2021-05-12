@@ -25,23 +25,6 @@ exports.ProductResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Product_1 = require("../entities/Product");
-let ProductInput = class ProductInput {
-};
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], ProductInput.prototype, "name", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", Number)
-], ProductInput.prototype, "price", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], ProductInput.prototype, "image", void 0);
-ProductInput = __decorate([
-    type_graphql_1.InputType()
-], ProductInput);
 let ProductPages = class ProductPages {
 };
 __decorate([

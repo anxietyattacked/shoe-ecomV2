@@ -8,13 +8,11 @@ import {
 import { pipe, tap } from "wonka";
 import {
   DeleteCommentMutationVariables,
-  DeletePostMutationVariables,
   LoginMutation,
   LogoutMutation,
   MeDocument,
   MeQuery,
   RegisterMutation,
-  VoteMutationVariables,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import Router from "next/router";
@@ -83,7 +81,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   }
 
   return {
-    url: "http://localhost:4000/graphql",
+    url: process.env.GRAPHQL_URL,
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie
@@ -108,48 +106,48 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
         },
         updates: {
           Mutation: {
-            deletePost: (_result, args, cache, info) => {
-              cache.invalidate({
-                __typename: "Post",
-                id: (args as DeletePostMutationVariables).id,
-              });
-            },
+            // deletePost: (_result, args, cache, info) => {
+            //   cache.invalidate({
+            //     __typename: "Post",
+            //     id: (args as DeletePostMutationVariables).id,
+            //   });
+            // },
             deleteComment: (_result, args, cache, info) => {
               cache.invalidate({
                 __typename: "Comment",
                 id: (args as DeleteCommentMutationVariables).id,
               });
             },
-            vote: (_result, args, cache, info) => {
-              const { postId, value } = args as VoteMutationVariables;
-              const data = cache.readFragment(
-                gql`
-                  fragment _ on Post {
-                    id
-                    points
-                    voteStatus
-                  }
-                `,
-                { id: postId } as any
-              );
+            // vote: (_result, args, cache, info) => {
+            //   const { postId, value } = args as VoteMutationVariables;
+            //   const data = cache.readFragment(
+            //     gql`
+            //       fragment _ on Post {
+            //         id
+            //         points
+            //         voteStatus
+            //       }
+            //     `,
+            //     { id: postId } as any
+            //   );
 
-              if (data) {
-                if (data.voteStatus === value) {
-                  return;
-                }
-                const newPoints =
-                  (data.points as number) + (!data.voteStatus ? 1 : 2) * value;
-                cache.writeFragment(
-                  gql`
-                    fragment __ on Post {
-                      points
-                      voteStatus
-                    }
-                  `,
-                  { id: postId, points: newPoints, voteStatus: value } as any
-                );
-              }
-            },
+            //   if (data) {
+            //     if (data.voteStatus === value) {
+            //       return;
+            //     }
+            //     const newPoints =
+            //       (data.points as number) + (!data.voteStatus ? 1 : 2) * value;
+            //     cache.writeFragment(
+            //       gql`
+            //         fragment __ on Post {
+            //           points
+            //           voteStatus
+            //         }
+            //       `,
+            //       { id: postId, points: newPoints, voteStatus: value } as any
+            //     );
+            //   }
+            // },
             createPost: (_result, args, cache, info) => {
               invalidateAllPosts(cache);
             },
