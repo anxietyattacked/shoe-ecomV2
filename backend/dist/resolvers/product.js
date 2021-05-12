@@ -40,7 +40,11 @@ ProductPages = __decorate([
 ], ProductPages);
 let ProductResolver = class ProductResolver {
     product(id) {
-        return Product_1.Product.findOne(id);
+        return __awaiter(this, void 0, void 0, function* () {
+            const product = yield Product_1.Product.findOne(id);
+            console.log(product);
+            return product;
+        });
     }
     products(limit, offset) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,6 +53,7 @@ let ProductResolver = class ProductResolver {
                 skip: offset
             });
             const pages = Math.ceil(totalCount / limit);
+            console.log(products);
             return { products: products, pages: pages };
         });
     }
@@ -87,7 +92,7 @@ __decorate([
     __param(0, type_graphql_1.Arg("id", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProductResolver.prototype, "product", null);
 __decorate([
     type_graphql_1.Query(() => ProductPages),

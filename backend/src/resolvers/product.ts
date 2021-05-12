@@ -14,10 +14,13 @@ class ProductPages {
 @Resolver(Product)
 export class ProductResolver {
 @Query(() => Product)
-product(
+async product(
     @Arg("id", () => Int) id : number
 ){
-    return Product.findOne(id)
+    const product = await Product.findOne(id)
+    console.log(product)
+    return product
+
 }
 
 @Query(() => ProductPages)
@@ -30,7 +33,7 @@ async products(
         skip: offset
     })
     const pages = Math.ceil(totalCount / limit)
-
+    console.log(products)
     return {products: products, pages: pages }
 }
 

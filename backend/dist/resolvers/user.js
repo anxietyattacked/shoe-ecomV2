@@ -171,9 +171,10 @@ let UserResolver = class UserResolver {
                         }]
                 };
             }
+            console.log("sucess");
             req.session.userId = user.id;
             return {
-                user,
+                user
             };
         });
     }

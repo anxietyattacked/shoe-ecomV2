@@ -166,9 +166,11 @@ async login(
             }]
         }
     }
+    console.log("sucess")
     req.session!.userId = user.id
     return {
-        user,
+
+        user
     }
 } 
 @Mutation(() => Boolean)
