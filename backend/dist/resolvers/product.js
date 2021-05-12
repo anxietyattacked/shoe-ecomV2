@@ -40,11 +40,9 @@ ProductPages = __decorate([
 ], ProductPages);
 let ProductResolver = class ProductResolver {
     product(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const product = yield Product_1.Product.findOne(id);
-            console.log(product);
-            return product;
-        });
+        const product = Product_1.Product.findOne(id);
+        console.log(product);
+        return product;
     }
     products(limit, offset) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -92,7 +90,7 @@ __decorate([
     __param(0, type_graphql_1.Arg("id", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ProductResolver.prototype, "product", null);
 __decorate([
     type_graphql_1.Query(() => ProductPages),

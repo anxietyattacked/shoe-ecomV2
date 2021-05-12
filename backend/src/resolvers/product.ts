@@ -14,10 +14,10 @@ class ProductPages {
 @Resolver(Product)
 export class ProductResolver {
 @Query(() => Product)
-async product(
+product(
     @Arg("id", () => Int) id : number
 ){
-    const product = await Product.findOne(id)
+    const product =  Product.findOne(id)
     console.log(product)
     return product
 
