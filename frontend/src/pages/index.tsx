@@ -85,4 +85,4 @@ import useWindowDimensions from '../utils/useWindowDimensions'
     </>
   )
 }
-export default withUrqlClient(createUrqlClient, {ssr:true})(Home)
+export default withUrqlClient(createUrqlClient)(Home)
