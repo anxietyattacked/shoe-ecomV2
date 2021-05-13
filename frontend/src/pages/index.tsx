@@ -34,7 +34,7 @@ import useWindowDimensions from '../utils/useWindowDimensions'
       pages.push(page)
     }
         
-    let isMobile = (window.width! <= 768)
+ 
   return (
     <>
     <Head>

@@ -33,7 +33,6 @@ async products(
         skip: offset
     })
     const pages = Math.ceil(totalCount / limit)
-    console.log(products)
     return {products: products, pages: pages }
 }
 
