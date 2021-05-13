@@ -84,7 +84,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             resolvers: [post_1.PostResolver, user_1.UserResolver, product_1.ProductResolver, order_1.OrderResolver, comment_1.CommentResolver],
             validate: false,
         }),
-        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() })
+        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() }),
+        introspection: true,
+        playground: true
     });
     apolloServer.applyMiddleware({ app, cors: false });
     app.use(express_1.default.json());

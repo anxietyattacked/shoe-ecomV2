@@ -86,7 +86,9 @@ const main = async () => {
             resolvers:[PostResolver, UserResolver, ProductResolver, OrderResolver, CommentResolver],
             validate: false,
         }), 
-        context: ({req, res}) => ({req, res, redis, userLoader: createUserLoader(), voteLoader: createVoteLoader()})
+        context: ({req, res}) => ({req, res, redis, userLoader: createUserLoader(), voteLoader: createVoteLoader()}),
+        introspection: true, //optional if you still want access to graphQL playground in production
+        playground: true
     })
 
 
