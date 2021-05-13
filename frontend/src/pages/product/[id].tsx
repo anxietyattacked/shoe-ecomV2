@@ -41,18 +41,6 @@ const Product : React.FC = () => {
         )
     }
  
-    if(error){
-        console.log(error.message)
-        console.log(data)
-        console.log(intId)
-        return(
-            
-            <div>{error.message}</div>
-        )
-    }
-    if(!fetching && !data){
-        return <div>Product not found</div>
-    }
     console.log(intId)
     console.log(data?.product)
     return (
