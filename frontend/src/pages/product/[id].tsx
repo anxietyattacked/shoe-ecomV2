@@ -11,7 +11,8 @@ import dynamic from "next/dynamic"
 import {useRouter} from 'next/router'
 import EditComment from '../../components/EditComment'
 import ProductComp from '../../components/Product'
-const Comments = dynamic(() => import('../../components/Comments'), {ssr: false})
+// const Comments = dynamic(() => import('../../components/Comments'), {ssr: false})
+import Comments from "../../components/Comments"
 import Head from 'next/head'
 
 
@@ -19,7 +20,6 @@ const Product : React.FC = () => {
     const intId = useGetIntId()
     const router = useRouter()
     const prodId = intId
-    const test = parseInt(router?.query.id as string)
     const limit = 4
     const [{data, fetching, error}] = useProductQuery({variables:{id:intId}})
     const  [offset, setOffset] = useState(0)
@@ -98,4 +98,4 @@ const Product : React.FC = () => {
     )
 }
 
-export default withUrqlClient(createUrqlClient, {ssr: true})(Product)
+export default withUrqlClient(createUrqlClient)(Product)

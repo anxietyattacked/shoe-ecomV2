@@ -198,7 +198,6 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
           },
         },
       }),
-      dedupExchange,
       errorExchange,
       ssrExchange,
       fetchExchange,
