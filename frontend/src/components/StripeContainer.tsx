@@ -15,8 +15,8 @@ type Props = ShipDetails & { children: React.ReactNode }
 
 const StripeContainer : React.FC<ShipDetails> = () => {
     
-    const PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY
-    const stripeTestPromise = loadStripe(PUBLIC_KEY!)
+    const PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY as string
+    const stripeTestPromise = loadStripe(PUBLIC_KEY)
     return (
         <Elements  stripe={stripeTestPromise}>
             <PaymentForm />

@@ -22,7 +22,7 @@ import { ProductResolver } from "./resolvers/product"
 import { Order } from "./entities/Order"
 import { OrderDetail } from "./entities/OrderDetail"
 import { OrderResolver } from "./resolvers/order"
-
+import Stripe from "stripe"
 import { CommentResolver } from "./resolvers/comment"
 import {Comment} from "./entities/Comment"
 
@@ -57,10 +57,10 @@ const main = async () => {
         origin: process.env.CORS_ORIGIN,
         credentials: true,
     }))
-    // const stripe = new Stripe(process.env.STRIPE_SECRET
-    // , {
-    //     apiVersion: '2020-08-27',
-    //   })
+    const stripe = new Stripe(process.env.STRIPE_SECRET
+    , {
+        apiVersion: '2020-08-27',
+      })
     
     app.use(
       session({
@@ -87,38 +87,38 @@ const main = async () => {
             validate: false,
         }), 
         context: ({req, res}) => ({req, res, redis, userLoader: createUserLoader(), voteLoader: createVoteLoader()}),
-        introspection: true, //optional if you still want access to graphQL playground in production
-        playground: true
+        // introspection: true, //optional if you still want access to graphQL playground in production
+        // playground: true
     })
 
 
     apolloServer.applyMiddleware({ app, cors: false})
     app.use(express.json());
-    // app.post("/stripe/charge", async (req, res) => {
-    //     console.log("stripe-routes.js 9 | route reached", req.body);
-    //     let { amount, id } = req.body;
-    //     console.log("stripe-routes.js 10 | amount and id", amount, id);
-    //     try {
-    //       const payment = await stripe.paymentIntents.create({
-    //         amount: amount,
-    //         currency: "USD",
-    //         description: "Your Company Description",
-    //         payment_method: id,
-    //         confirm: true,
-    //       });
-    //       console.log("stripe-routes.js 19 | payment", payment);
-    //       res.json({
-    //         message: "Payment Successful",
-    //         success: true,
-    //       });
-    //     } catch (error) {
-    //       console.log("stripe-routes.js 17 | error", error);
-    //       res.json({
-    //         message: "Payment Failed",
-    //         success: false,
-    //       });
-    //     }
-    //   });
+    app.post("/stripe/charge", async (req, res) => {
+        console.log("stripe-routes.js 9 | route reached", req.body);
+        let { amount, id } = req.body;
+        console.log("stripe-routes.js 10 | amount and id", amount, id);
+        try {
+          const payment = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: "USD",
+            description: "Your Company Description",
+            payment_method: id,
+            confirm: true,
+          });
+          console.log("stripe-routes.js 19 | payment", payment);
+          res.json({
+            message: "Payment Successful",
+            success: true,
+          });
+        } catch (error) {
+          console.log("stripe-routes.js 17 | error", error);
+          res.json({
+            message: "Payment Failed",
+            success: false,
+          });
+        }
+      });
 
     app.listen(process.env.PORT || 4000, () => {
         console.log(`server started on localhost: ${process.env.PORT}`)
