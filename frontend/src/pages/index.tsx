@@ -25,12 +25,7 @@ import useWindowDimensions from '../utils/useWindowDimensions'
     
 
     
-    if(!fetching && !data){
-      return (
-        <div>{error?.message};
-        </div>
-      )
-    }
+
 
     const dSrc = search !== "" ? sData?.searchProducts.pages : data?.products.pages!
     let pages = [] as number[]
