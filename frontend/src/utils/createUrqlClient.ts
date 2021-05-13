@@ -47,7 +47,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   }
 
   return {
-    url: process.env.GRAPHQL_URL as string || "http://localhost:4000/graphql",
+    url: process.env.GRAPHQL_URL as string || "https://sneakerflex-backend.herokuapp.com/graphql",
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie
