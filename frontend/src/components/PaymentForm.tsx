@@ -69,7 +69,7 @@ const PaymentForm : React.FC<any> = ({shipping, setIsOpen}) => {
 
           if (!error) {
             const { id } : any = paymentMethod;
-            const {data} = await axios.post(process.env.STRIPE_API!, {id, amount: total! * 100 })
+            const {data} = await axios.post(process.env.STRIPE_API || "https://sneakerflex-backend.herokuapp.com/stripe/charge", {id, amount: total! * 100 })
             try {
               console.log(data);
               setPaySuccess(true)
