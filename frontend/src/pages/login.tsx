@@ -34,6 +34,11 @@ const Login = () => {
                 {({isSubmitting}) => (
                     <Form className="flex flex-col shadow pt-20 pb-20 px-20 mb-80">
                         <h1 className="text-center text-3xl mb-16">Login</h1>
+                        <div className="grid place-content-center mb-4">
+                            <h1 className="font-bold">Demo User</h1>
+                            <p><strong>username:</strong>demo</p>
+                            <p><strong>password:</strong>:tester</p>
+                        </div>
                         <InputField className="w-96 shadow-inner"
                         name="usernameOrEmail"
                         label="Username or Email"

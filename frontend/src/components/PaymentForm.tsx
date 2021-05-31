@@ -51,7 +51,7 @@ interface ShipDetails{
     country: string
 }
 
-const PaymentForm : React.FC<any> = ({shipping, setIsOpen}) => {
+const PaymentForm : React.FC<any> = ({shipping, setIsOpen, isDemo}) => {
     const [cart, setCart, addToCart, removeFromCart]  = useContext(CartContext)
     const [paySuccess, setPaySuccess] = useState(false)
     const [,createOrder] = useCreateOrderMutation()
@@ -112,7 +112,13 @@ const PaymentForm : React.FC<any> = ({shipping, setIsOpen}) => {
     }
     
     return (
-        <Formik initialValues={{name:"", email:"",  address: "", city:"", state:"", zipcode:"", country:""}} 
+        <Formik initialValues={{name: shipping.shipName, 
+            email:isDemo ? "test@test.com" : "",  
+            address: shipping.shipAddress, 
+            city:shipping.city, 
+            state:shipping.state, 
+            zipcode: shipping.zipcode, 
+            country: shipping.country}} 
         onSubmit={async (values, {setErrors}) => {
             await handleSubmit()
       
@@ -161,8 +167,14 @@ const PaymentForm : React.FC<any> = ({shipping, setIsOpen}) => {
                         label="Country"
                         type="text"
                         />
+       
                         </div>
-
+                            <div className="w-full">
+                            <h1 className="font-bold">Test Card</h1>
+                            <p>Card:4242 4242 4242 4242</p>
+                            <p>Date:04/22</p>
+                            <p>CVC:222</p>
+                        </div>
                 <CardElement className="" options={{
                     iconStyle: "solid",
                     style: {

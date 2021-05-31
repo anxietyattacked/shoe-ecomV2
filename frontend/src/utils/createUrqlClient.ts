@@ -39,7 +39,7 @@ export const ssrCache = ssrExchange({isClient:!isServer()})
 //     cache.invalidate("Query", "posts", fi.arguments || {});
 //   });
 // }
-// || "https://sneakerflex-backend.herokuapp.com/graphql"
+
 export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   let cookie = "";
   if (isServer()) {
@@ -47,7 +47,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   }
 
   return {
-    url: process.env.NEXT_PUBLIC_GRAPHQL_URL as string ,
+    url: process.env.NEXT_PUBLIC_GRAPHQL_URL as string || "http://localhost:4000/graphql",
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie

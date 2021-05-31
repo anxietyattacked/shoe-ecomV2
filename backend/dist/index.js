@@ -47,17 +47,14 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         synchronize: false,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Post_1.Post, User_1.User, Vote_1.Vote, Product_1.Product, Order_1.Order, OrderDetail_1.OrderDetail, Comment_1.Comment],
-        ssl: {
-            rejectUnauthorized: false
-        }
     });
     conn;
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);
-    const redis = new ioredis_1.default(process.env.REDIS_URL);
+    const redis = new ioredis_1.default();
     app.set("trust proxy", 1);
     app.use(cors_1.default({
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
         credentials: true,
     }));
     const stripe = new stripe_1.default(process.env.STRIPE_SECRET, {
@@ -71,8 +68,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-            httpOnly: false,
-            sameSite: "lax",
+            httpOnly: true,
+            sameSite: "none",
             secure: true,
         },
         saveUninitialized: false,
@@ -85,8 +82,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader_1.createUserLoader(), voteLoader: createVoteLoader_1.createVoteLoader() }),
-        introspection: true,
-        playground: true
     });
     apolloServer.applyMiddleware({ app, cors: false });
     app.use(express_1.default.json());
@@ -116,7 +111,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
     }));
-    app.listen(parseInt(process.env.PORT) || 4000, () => {
+    app.listen(process.env.PORT || 4000, () => {
         console.log(`server started on localhost: ${process.env.PORT}`);
     });
 });

@@ -45,6 +45,7 @@ const order = () => {
     const [cart, setCart, addToCart, removeFromCart]  = useContext(CartContext)
     const [shipping, setShipping] = useState({})
     let [isOpen, setIsOpen] = useState(false);
+    const [isDemo, setIsDemo] =  useState(false)
     const [,createOrder] = useCreateOrderMutation()
     if(cart?.length === 0){
         return <div>no item in cart</div>
@@ -55,6 +56,9 @@ const order = () => {
 
     const PUBLIC_KEY = "pk_test_51IjtJLAb9iEiNhPbE7yCSblATPeGX2lZyRr0nsOFsVoBclMvJRy5K6z9IpagCRQksDim6s47OMszmsNk84w1EZ3V008wHgQ723" 
     const stripeTestPromise = loadStripe(PUBLIC_KEY)
+    console.log(shipping)
+
+
     return (
         <>
             <Head>
@@ -65,9 +69,16 @@ const order = () => {
         <div className="py-10 px-3 min-h-screen grid place-content-center">
             {shipping && Object.keys(shipping).length !== 0 && shipping.constructor === Object  ?  
            <Elements  stripe={stripeTestPromise}>
-           <PaymentForm shipping={shipping} setIsOpen={setIsOpen}/>
+           <PaymentForm shipping={shipping} setIsOpen={setIsOpen} isDemo={isDemo}/>
        </Elements>
-            :  <Formik initialValues ={{shipName:"", shipAddress: "", city:"", state:"", zipcode: "", country:""}} 
+            :  <Formik enableReinitialize={true}
+             initialValues ={{shipName: isDemo === true ? "John Smith" : "", 
+            shipAddress: isDemo === true ? "123 Fake Street Drive" : "", 
+            city: isDemo === true ? "Seattle" : "", 
+            state:isDemo === true ? "WA" : "", 
+            zipcode: isDemo === true ? "98116" : "", 
+            country:isDemo === true ? "United States" : ""}}
+
             onSubmit={async (values, {setErrors}) => {
                 if(cart?.length === 0){
                     return
@@ -82,6 +93,11 @@ const order = () => {
                 {({isSubmitting}) => (
                     <Form className="flex flex-col shadow px-4 py-4">
                         <h1 className="text-center text-2xl mb-4">Shipping</h1>
+                        <div className="flex mb-4">
+                            <label htmlFor="demo"><strong>Demo Info</strong></label>
+                            <input className="mt-2" type="checkbox" id="demo" name="demo" value="yes" onChange={() => setIsDemo(!isDemo)}/>
+                            
+                        </div>
                         <div className="grid grid-cols-5">
                         <InputField className="col-span-5 shadow-inner"
                         name="shipName"
