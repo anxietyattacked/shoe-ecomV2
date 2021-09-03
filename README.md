@@ -6,7 +6,7 @@
 
 - [Repo](https://github.com/anxietyattacked/shoe-ecomV2 "SneakerFlex Repo")
 
-- [Live]https://sneakerflex.vercel.app/ "Live View")
+- [Live](https://sneakerflex.vercel.app/ "Live View")
 
 ## Built With
 - TypeScript
