@@ -9,7 +9,7 @@
 - [Live](https://sneakerflex.vercel.app/ "Live View")
 
 ## Built With
-- TypeScript
+- TypeScript - Next.js
 - Next.js
 - HTML
 - Urql
